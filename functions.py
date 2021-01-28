@@ -1,19 +1,12 @@
+import re
+
+
 def parse_user_data(line):
     """
     >>> parse_user_data('John Doe john.doe@example.com')
     ('John', 'Doe', 'john.doe', 'example.com')
     """
-
-    parts = line.split(' ')
-    first_name = parts[0]
-    last_name = parts[1]
-    email = parts[2]
-
-    email_parts = email.split('@')
-    user = email_parts[0]
-    host = email_parts[1]
-
-    response = (first_name, last_name, user, host)
+    response = tuple(re.split('@| ', line))
     return response
 
 
@@ -169,3 +162,7 @@ def top_words(words, n=10):
     result.sort(reverse=True)
     result = result[:n]
     return [(count, word) for (word, count) in result]
+
+
+if __name__ == ("__main__"):
+    print(parse_user_data('John Doe john.doe@example.com'))
