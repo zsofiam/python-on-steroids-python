@@ -18,15 +18,15 @@ def compare_lists(dir_a, dir_b):
     {'removed': ['hello.py'], 'added': ['hello2.py', 'install.txt']}
     """
 
-    removed = []
-    for filename in dir_a:
-        if filename not in dir_b:
-            removed.append(filename)
+    removed = [filename for filename in dir_a if filename not in dir_b]
+    # for filename in dir_a:
+    #     if filename not in dir_b:
+    #         removed.append(filename)
 
-    added = []
-    for filename in dir_b:
-        if filename not in dir_a:
-            added.append(filename)
+    added = [filename for filename in dir_b if filename not in dir_a]
+    # for filename in dir_b:
+    #     if filename not in dir_a:
+    #         added.append(filename)
 
     return {'removed': sorted(removed), 'added': sorted(added)}
 
@@ -166,3 +166,4 @@ def top_words(words, n=10):
 
 if __name__ == ("__main__"):
     print(parse_user_data('John Doe john.doe@example.com'))
+    print(compare_lists(['hello.py', 'readme.txt'], ['readme.txt', 'install.txt', 'hello2.py']))
