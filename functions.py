@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 
 def parse_user_data(line):
@@ -37,23 +38,23 @@ def print_log(message, process_id, timestamp, level=2):
     >>> print_log('System started!', 1532, datetime(2019, 1, 2, 10, 30, 55).isoformat(' '))
     2019-01-02 10:30:55 [1532] [INFO] System started!
     """
-
-    line = timestamp
-    line += ' [' + str(process_id) + ']'
-    if level == 0:
-        loglevel = 'TRACE'
-    elif level == 1:
-        loglevel = 'DEBUG'
-    elif level == 2:
-        loglevel = 'INFO'
-    elif level == 3:
-        loglevel = 'WARN'
-    elif level == 4:
-        loglevel = 'ERROR'
-    else:
-        loglevel = 'None'
-    line += ' [' + loglevel + ']'
-    line += ' ' + message
+    loglevel = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'None']
+    line = timestamp + ' [' + str(process_id) + ']' + ' [' + loglevel[level] + ']' + ' ' + message
+    # line += ' [' + str(process_id) + ']'
+    # if level == 0:
+    #     loglevel = 'TRACE'
+    # elif level == 1:
+    #     loglevel = 'DEBUG'
+    # elif level == 2:
+    #     loglevel = 'INFO'
+    # elif level == 3:
+    #     loglevel = 'WARN'
+    # elif level == 4:
+    #     loglevel = 'ERROR'
+    # else:
+    #     loglevel = 'None'
+    # line += ' [' + loglevel + ']'
+    # line += ' ' + message
     print(line)
 
 
@@ -66,10 +67,11 @@ def biggest_rectangle(rectangles):
     (3, 3)
     """
 
-    best = rectangles[0]
-    for r in rectangles:
-        if r[0] * r[1] > best[0] * best[1]:
-            best = r
+    # best = rectangles[0]
+    # for r in rectangles:
+    #     if r[0] * r[1] > best[0] * best[1]:
+    #         best = r
+    best = max(rectangles, key=lambda  r: r[0]*r[1])
     return best
 
 
@@ -92,24 +94,29 @@ def find_in_file(pattern, filename):
     140 Shall be lifted- nevermore!
     """
 
-    f = open(filename)
-    try:
-        line_num = 0
-        for line in f:
-            char_num = 0
-            while line[char_num] == ' ':
-                char_num = char_num + 1
-            line = line[char_num: -1]
+    # f = open(filename)
+    # try:
+    #     line_num = 0
+    #     for line in f:
+    #         char_num = 0
+    #         while line[char_num] == ' ':
+    #             char_num = char_num + 1
+    #         line = line[char_num: -1]
+    #         if pattern.lower() in line.lower():
+    #             spaces = ''
+    #             if line_num < 10:
+    #                 spaces = '  '
+    #             elif line_num < 100:
+    #                 spaces = ' '
+    #             print(spaces + str(line_num) + ' ' + line)
+    #         line_num += 1
+    # finally:
+    #     f.close()
+
+    with open(filename) as file:
+        for line_num,line in enumerate(file):
             if pattern.lower() in line.lower():
-                spaces = ''
-                if line_num < 10:
-                    spaces = '  '
-                elif line_num < 100:
-                    spaces = ' '
-                print(spaces + str(line_num) + ' ' + line)
-            line_num += 1
-    finally:
-        f.close()
+                print( f"{line_num:>3} {line.strip(' ')}", end ="")
 
 
 def read_long_words(filename, min_length=0):
@@ -167,3 +174,6 @@ def top_words(words, n=10):
 if __name__ == ("__main__"):
     print(parse_user_data('John Doe john.doe@example.com'))
     print(compare_lists(['hello.py', 'readme.txt'], ['readme.txt', 'install.txt', 'hello2.py']))
+    print_log('System started!', 1532, datetime(2019, 1, 2, 10, 30, 55).isoformat(' '))
+    print(biggest_rectangle([(2, 4), (3, 3), (4, 2)]))
+    find_in_file('nevermore', 'raven.txt')
